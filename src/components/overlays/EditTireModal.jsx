@@ -1,6 +1,30 @@
+import { useRef, useState } from "react";
 import { FUELS, TYPES, WETS } from "../../constants/appData";
+import { optimizeImageFile } from "../../utils/imageUpload";
 
 export default function EditTireModal({ tire, setEditTire, onClose, onSave }) {
+  const editImageInputRef = useRef(null);
+  const [isUploadingImage, setIsUploadingImage] = useState(false);
+  const [imageUploadError, setImageUploadError] = useState("");
+
+  const handleEditImageUpload = async (event) => {
+    const file = event.target.files?.[0];
+    event.target.value = "";
+    if (!file || !tire) return;
+
+    setImageUploadError("");
+    setIsUploadingImage(true);
+
+    try {
+      const { dataUrl } = await optimizeImageFile(file);
+      setEditTire((current) => ({ ...current, imageUrl: dataUrl }));
+    } catch (error) {
+      setImageUploadError(error instanceof Error ? error.message : "Αποτυχία ανεβάσματος εικόνας.");
+    } finally {
+      setIsUploadingImage(false);
+    }
+  };
+
   if (!tire) return null;
 
   return (
@@ -19,6 +43,48 @@ export default function EditTireModal({ tire, setEditTire, onClose, onSave }) {
         </div>
         <div className="modal-bdy">
           <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16 }}>
+            <input
+              ref={editImageInputRef}
+              type="file"
+              accept="image/*"
+              style={{ display: "none" }}
+              onChange={handleEditImageUpload}
+            />
+            <button
+              type="button"
+              className="upload-zone"
+              style={{ gridColumn: "span 2" }}
+              onClick={() => editImageInputRef.current?.click()}
+              disabled={isUploadingImage}
+            >
+              <div className="upload-zone-ico">📤</div>
+              <p>{isUploadingImage ? "Γίνεται επεξεργασία εικόνας..." : "Ανέβασε νέα φωτογραφία από τη συσκευή"}</p>
+              <span>JPG, PNG, WEBP · γίνεται αυτόματη βελτιστοποίηση</span>
+            </button>
+            {imageUploadError && (
+              <div className="mf" style={{ gridColumn: "span 2", marginBottom: 0 }}>
+                <span className="err-msg">⚠ {imageUploadError}</span>
+              </div>
+            )}
+            {tire.imageUrl && (
+              <div className="product-image-preview" style={{ gridColumn: "span 2", maxWidth: "100%", marginBottom: 0 }}>
+                <img src={tire.imageUrl} alt={`${tire.brand} ${tire.name}`} loading="lazy" />
+              </div>
+            )}
+            <div className="mf" style={{ gridColumn: "span 2" }}>
+              <label>🖼 Εικόνα (URL, εναλλακτικά)</label>
+              <input
+                type="url"
+                placeholder="https://example.com/tire.jpg ή /images/tire.jpg"
+                value={tire.imageUrl || ""}
+                onChange={(e) => setEditTire((t) => ({ ...t, imageUrl: e.target.value }))}
+              />
+              {tire.imageUrl && (
+                <button type="button" className="modal-discard" onClick={() => setEditTire((t) => ({ ...t, imageUrl: "" }))}>
+                  Αφαίρεση εικόνας
+                </button>
+              )}
+            </div>
             <div className="mf" style={{ gridColumn: "span 2" }}>
               <label>Μοντέλο</label>
               <input value={tire.name} onChange={(e) => setEditTire((t) => ({ ...t, name: e.target.value }))} />

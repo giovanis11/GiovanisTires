@@ -30,9 +30,26 @@ export const WETS    = ["A","B","C","D","E"];
 export const SPEEDS  = ["R","H","T","V","W","Y"];
 export const FUEL_COLORS = { A:"#166534", B:"#15803d", C:"#92400e", D:"#991b1b", E:"#7f1d1d" };
 export const WET_COLORS  = { A:"#1e40af", B:"#1d4ed8", C:"#7e22ce", D:"#9d174d", E:"#7f1d1d" };
-export const BLANK = { brand:"", name:"", width:"", aspect:"", rim:"", type:"", price:"", stock:"", fuel:"A", wet:"A", noise:"70", load:"91", speed:"V", description:"" };
+export const BLANK = {
+  brand:"",
+  name:"",
+  width:"",
+  aspect:"",
+  rim:"",
+  type:"",
+  price:"",
+  stock:"",
+  fuel:"A",
+  wet:"A",
+  noise:"70",
+  load:"91",
+  speed:"V",
+  description:"",
+  imageUrl:"",
+};
 export const DASHBOARD_PASSWORD = "2003";
 export const TIRES_STORAGE_KEY = "giovanis-tires.inventory.v1";
+export const PRODUCT_FORM_STORAGE_KEY = "giovanis-tires.product-form.v1";
 export const PRICE_FILTER_MAX = 2000;
 
 export const getNextTireId = (list) =>
@@ -47,5 +64,18 @@ export const loadTiresFromStorage = () => {
     return Array.isArray(parsed) ? parsed : INITIAL_TIRES;
   } catch {
     return INITIAL_TIRES;
+  }
+};
+
+export const loadProductFormFromStorage = () => {
+  if (typeof window === "undefined") return BLANK;
+  try {
+    const raw = window.localStorage.getItem(PRODUCT_FORM_STORAGE_KEY);
+    if (!raw) return BLANK;
+    const parsed = JSON.parse(raw);
+    if (!parsed || typeof parsed !== "object" || Array.isArray(parsed)) return BLANK;
+    return { ...BLANK, ...parsed };
+  } catch {
+    return BLANK;
   }
 };

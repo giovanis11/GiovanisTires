@@ -7,7 +7,7 @@ export default function ProductsPage({
   setSortBy,
   sidebarOpen,
   setSidebarOpen,
-  SidebarContent,
+  renderSidebar,
   viewMode,
   setViewMode,
   clearAll,
@@ -70,7 +70,7 @@ export default function ProductsPage({
               </button>
             </div>
           )}
-          <SidebarContent />
+          {renderSidebar()}
         </div>
         <div className="products-main">
           <div className="view-row">
@@ -97,7 +97,13 @@ export default function ProductsPage({
             <div className={`products-grid ${viewMode === "list" ? "list" : ""}`}>
               {filteredProducts.map((t) => (
                 <div key={t.id} className={`product-card ${viewMode === "list" ? "lc" : ""}`}>
-                  <div className="product-img">🛞</div>
+                  <div className="product-img">
+                    {t.imageUrl ? (
+                      <img src={t.imageUrl} alt={`${t.brand} ${t.name}`} className="product-thumb" loading="lazy" />
+                    ) : (
+                      "🛞"
+                    )}
+                  </div>
                   <div className="product-info">
                     <div className="brand-tag">{t.brand}</div>
                     <div className="product-name">{t.name}</div>

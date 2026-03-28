@@ -4,7 +4,9 @@ import {
   BLANK,
   DASHBOARD_PASSWORD,
   getNextTireId,
+  loadProductFormFromStorage,
   loadTiresFromStorage,
+  PRODUCT_FORM_STORAGE_KEY,
   PRICE_FILTER_MAX,
   TIRES_STORAGE_KEY,
 } from "./constants/appData";
@@ -51,7 +53,7 @@ export default function App() {
     maxNoise: 75,
   });
 
-  const [form, setForm] = useState(BLANK);
+  const [form, setForm] = useState(() => loadProductFormFromStorage());
   const [formErrors, setFormErrors] = useState({});
   const [toast, setToast] = useState(null);
   const [editTire, setEditTire] = useState(null);
@@ -81,6 +83,14 @@ export default function App() {
       // Ignore storage write failures (private mode/quota).
     }
   }, [tires]);
+
+  useEffect(() => {
+    try {
+      window.localStorage.setItem(PRODUCT_FORM_STORAGE_KEY, JSON.stringify(form));
+    } catch {
+      // Ignore storage write failures (private mode/quota).
+    }
+  }, [form]);
 
   const handleDashClick = () => {
     if (dashUnlocked) {
@@ -138,6 +148,7 @@ export default function App() {
       stock: +form.stock,
       noise: +form.noise,
       load: +form.load,
+      imageUrl: form.imageUrl?.trim() || "",
     };
 
     setTires((ts) => [tire, ...ts]);
@@ -152,7 +163,13 @@ export default function App() {
     setTires((ts) =>
       ts.map((x) =>
         x.id === editTire.id
-          ? { ...editTire, price: +editTire.price, stock: +editTire.stock, noise: +editTire.noise }
+          ? {
+              ...editTire,
+              price: +editTire.price,
+              stock: +editTire.stock,
+              noise: +editTire.noise,
+              imageUrl: editTire.imageUrl?.trim() || "",
+            }
           : x,
       ),
     );
@@ -374,7 +391,7 @@ export default function App() {
           setSortBy={setSortBy}
           sidebarOpen={sidebarOpen}
           setSidebarOpen={setSidebarOpen}
-          SidebarContent={SidebarContent}
+          renderSidebar={SidebarContent}
           viewMode={viewMode}
           setViewMode={setViewMode}
           clearAll={clearAll}

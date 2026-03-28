@@ -1,4 +1,4 @@
-import { Fragment } from "react";
+import { Fragment, useRef, useState } from "react";
 import {
   ASPECTS,
   BLANK,
@@ -12,6 +12,7 @@ import {
   WET_COLORS,
   WIDTHS,
 } from "../constants/appData";
+import { optimizeImageFile } from "../utils/imageUpload";
 
 export default function DashboardPage({
   dashTab,
@@ -43,6 +44,28 @@ export default function DashboardPage({
   setEditTire,
   setDelTire,
 }) {
+  const addImageInputRef = useRef(null);
+  const [isUploadingImage, setIsUploadingImage] = useState(false);
+  const [imageUploadError, setImageUploadError] = useState("");
+
+  const handleAddImageUpload = async (event) => {
+    const file = event.target.files?.[0];
+    event.target.value = "";
+    if (!file) return;
+
+    setImageUploadError("");
+    setIsUploadingImage(true);
+
+    try {
+      const { dataUrl } = await optimizeImageFile(file);
+      setF("imageUrl", dataUrl);
+    } catch (error) {
+      setImageUploadError(error instanceof Error ? error.message : "Αποτυχία ανεβάσματος εικόνας.");
+    } finally {
+      setIsUploadingImage(false);
+    }
+  };
+
   return (
     <div className="dash-wrap">
       <div className="dash-sidenav">
@@ -342,7 +365,51 @@ export default function DashboardPage({
                   />
                 </div>
                 <div className="sec-div" />
-                <div className="sec-title">2. Διαστάσεις</div>
+                <div className="sec-title">
+                  2. Εικόνα Προϊόντος{" "}
+                  <span style={{ color: "#555", fontSize: 11, fontWeight: 400, textTransform: "none" }}>· προαιρετικό</span>
+                </div>
+                <input
+                  ref={addImageInputRef}
+                  type="file"
+                  accept="image/*"
+                  style={{ display: "none" }}
+                  onChange={handleAddImageUpload}
+                />
+                <button
+                  type="button"
+                  className="upload-zone"
+                  onClick={() => addImageInputRef.current?.click()}
+                  disabled={isUploadingImage}
+                >
+                  <div className="upload-zone-ico">📤</div>
+                  <p>{isUploadingImage ? "Γίνεται επεξεργασία εικόνας..." : "Ανέβασε φωτογραφία από τη συσκευή"}</p>
+                  <span>JPG, PNG, WEBP · γίνεται αυτόματη βελτιστοποίηση</span>
+                </button>
+                {imageUploadError && <span className="err-msg">⚠ {imageUploadError}</span>}
+                <div className="big-field">
+                  <label className="big-label">🖼 URL εικόνας (εναλλακτικά)</label>
+                  <p className="big-hint">Αν θέλεις, βάλε URL (π.χ. `https://...`) ή path από το domain σου (π.χ. `/images/tire.jpg`).</p>
+                  <input
+                    type="url"
+                    className="big-input"
+                    placeholder="https://example.com/tire.jpg ή /images/tire.jpg"
+                    value={form.imageUrl}
+                    onChange={(e) => setF("imageUrl", e.target.value)}
+                  />
+                </div>
+                {form.imageUrl && (
+                  <>
+                    <div className="product-image-preview">
+                      <img src={form.imageUrl} alt={`${form.brand || "Ελαστικό"} ${form.name || ""}`.trim()} loading="lazy" />
+                    </div>
+                    <button type="button" className="big-cancel image-remove-btn" onClick={() => setF("imageUrl", "")}>
+                      🗑 Αφαίρεση εικόνας
+                    </button>
+                  </>
+                )}
+                <div className="sec-div" />
+                <div className="sec-title">3. Διαστάσεις</div>
                 <div className="fg3">
                   <div className="big-field">
                     <label className="big-label">
@@ -402,7 +469,7 @@ export default function DashboardPage({
                   </div>
                 )}
                 <div className="sec-div" />
-                <div className="sec-title">3. Εποχή, Τιμή Σετ 4 & Απόθεμα</div>
+                <div className="sec-title">4. Εποχή, Τιμή Σετ 4 & Απόθεμα</div>
                 <div className="fg3">
                   <div className="big-field">
                     <label className="big-label">
@@ -451,7 +518,7 @@ export default function DashboardPage({
                 </div>
                 <div className="sec-div" />
                 <div className="sec-title">
-                  4. Ετικέτες EU <span style={{ color: "#555", fontSize: 11, fontWeight: 400, textTransform: "none" }}>· προαιρετικό</span>
+                  5. Ετικέτες EU <span style={{ color: "#555", fontSize: 11, fontWeight: 400, textTransform: "none" }}>· προαιρετικό</span>
                 </div>
                 <div className="fg3">
                   <div className="big-field">
@@ -638,7 +705,13 @@ export default function DashboardPage({
                         <div className="brand-tire-list">
                           {brandTires.map((t) => (
                             <div key={t.id} className="tire-row">
-                              <div className="tire-row-icon">🛞</div>
+                              <div className="tire-row-icon">
+                                {t.imageUrl ? (
+                                  <img src={t.imageUrl} alt={`${t.brand} ${t.name}`} className="tire-row-thumb" loading="lazy" />
+                                ) : (
+                                  "🛞"
+                                )}
+                              </div>
                               <div className="tire-row-info">
                                 <div className="tire-row-name">{t.name}</div>
                                 <div className="tire-row-dim">

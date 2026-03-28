@@ -240,6 +240,7 @@ export const appStyle = `
   .product-card.lc { display:flex; flex-direction:row; }
   .product-img { background:linear-gradient(135deg,#0f0f0f 0%,#1a1a1a 100%); height:160px; display:flex; align-items:center; justify-content:center; font-size:68px; position:relative; overflow:hidden; flex-shrink:0; }
   .product-img::after { content:''; position:absolute; inset:0; background:radial-gradient(circle at center, transparent 40%, rgba(0,0,0,.25) 100%); }
+  .product-thumb { width:100%; height:100%; object-fit:cover; position:relative; z-index:1; }
   .lc .product-img { width:140px; height:auto; }
   .product-info { padding:13px; flex:1; display:flex; flex-direction:column; }
   .brand-tag { font-size:9px; text-transform:uppercase; letter-spacing:2px; color:var(--red); font-weight:700; margin-bottom:3px; }
@@ -368,6 +369,18 @@ export const appStyle = `
   .big-input:focus, .big-select:focus, .big-textarea:focus { border-color:var(--red); box-shadow:0 0 0 4px rgba(232,25,44,.1); }
   .big-input.err, .big-select.err { border-color:#f87171; }
   .big-textarea { resize:vertical; min-height:80px; }
+  .product-image-preview {
+    width:100%;
+    max-width:320px;
+    height:190px;
+    border-radius:10px;
+    overflow:hidden;
+    border:1px solid #2a2a2a;
+    background:#0a0a0a;
+    margin-top:-4px;
+    margin-bottom:8px;
+  }
+  .product-image-preview img { width:100%; height:100%; object-fit:cover; display:block; }
   .err-msg { font-size:12px; color:#f87171; display:flex; align-items:center; gap:5px; }
   .dim-preview { background:#0a0a0a; border:1px solid #1e1e1e; border-radius:8px; padding:12px 16px; display:inline-flex; align-items:center; gap:14px; margin-top:6px; }
   .dim-preview-label { font-size:11px; color:#555; }
@@ -417,7 +430,20 @@ export const appStyle = `
   .tire-row { display:flex; align-items:center; gap:14px; padding:14px 20px; border-bottom:1px solid #141414; transition:background .15s; flex-wrap:wrap; }
   .tire-row:last-child { border-bottom:none; }
   .tire-row:hover { background:#161616; }
-  .tire-row-icon { font-size:24px; flex-shrink:0; }
+  .tire-row-icon {
+    width:46px;
+    height:46px;
+    border-radius:8px;
+    border:1px solid #2a2a2a;
+    background:#0b0b0b;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:24px;
+    overflow:hidden;
+    flex-shrink:0;
+  }
+  .tire-row-thumb { width:100%; height:100%; object-fit:cover; display:block; }
   .tire-row-info { flex:1; min-width:120px; }
   .tire-row-name { font-size:14px; font-weight:600; }
   .tire-row-dim { font-size:12px; color:#666; margin-top:2px; }
@@ -456,11 +482,24 @@ export const appStyle = `
   .toast-msg strong { display:block; font-size:14px; color:#4ade80; }
   .toast-msg span { font-size:12px; color:#86efac; }
   .toast-close { background:none; border:none; color:#4ade80; font-size:18px; cursor:pointer; margin-left:auto; flex-shrink:0; }
-  .upload-zone { border:2px dashed #2a2a2a; border-radius:10px; padding:32px; text-align:center; cursor:pointer; transition:all .2s; background:#0a0a0a; }
+  .upload-zone {
+    width:100%;
+    border:2px dashed #2a2a2a;
+    border-radius:10px;
+    padding:24px;
+    text-align:center;
+    cursor:pointer;
+    transition:all .2s;
+    background:#0a0a0a;
+    color:inherit;
+    font-family:'Outfit',sans-serif;
+  }
   .upload-zone:hover { border-color:var(--red); background:#0f0508; }
+  .upload-zone:disabled { opacity:.65; cursor:not-allowed; }
   .upload-zone-ico { font-size:36px; margin-bottom:10px; }
   .upload-zone p { font-size:14px; color:#888; }
   .upload-zone span { font-size:12px; color:#444; display:block; margin-top:4px; }
+  .image-remove-btn { margin-top:0; }
   .empty-state { text-align:center; padding:60px 0; }
   .empty-state .es-ico { font-size:52px; margin-bottom:16px; }
   .empty-state h3 { font-size:20px; margin-bottom:8px; }
