@@ -11,6 +11,8 @@ export default function ProductsPage({
   viewMode,
   setViewMode,
   clearAll,
+  isLoading,
+  dataError,
 }) {
   return (
     <div className="products-page">
@@ -84,7 +86,19 @@ export default function ProductsPage({
               ☰ Λίστα
             </button>
           </div>
-          {filteredProducts.length === 0 ? (
+          {isLoading ? (
+            <div className="no-results">
+              <div className="emoji">⏳</div>
+              <h3>Φορτώνεται ο κατάλογος</h3>
+              <p>Γίνεται ανάκτηση προϊόντων από το backend.</p>
+            </div>
+          ) : dataError ? (
+            <div className="no-results">
+              <div className="emoji">⚠️</div>
+              <h3>Δεν ήταν δυνατή η φόρτωση</h3>
+              <p>{dataError}</p>
+            </div>
+          ) : filteredProducts.length === 0 ? (
             <div className="no-results">
               <div className="emoji">🔍</div>
               <h3>Δεν βρέθηκαν ελαστικά</h3>

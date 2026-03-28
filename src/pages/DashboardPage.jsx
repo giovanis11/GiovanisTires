@@ -43,6 +43,8 @@ export default function DashboardPage({
   invFiltered,
   setEditTire,
   setDelTire,
+  isSaving,
+  onSignOut,
 }) {
   const addImageInputRef = useRef(null);
   const [isUploadingImage, setIsUploadingImage] = useState(false);
@@ -57,8 +59,13 @@ export default function DashboardPage({
     setIsUploadingImage(true);
 
     try {
-      const { dataUrl } = await optimizeImageFile(file);
-      setF("imageUrl", dataUrl);
+      const { file: optimizedFile, previewUrl } = await optimizeImageFile(file);
+      setForm((current) => ({
+        ...current,
+        imageFile: optimizedFile,
+        imagePreviewUrl: previewUrl,
+        imageUrl: "",
+      }));
     } catch (error) {
       setImageUploadError(error instanceof Error ? error.message : "Αποτυχία ανεβάσματος εικόνας.");
     } finally {
@@ -102,9 +109,23 @@ export default function DashboardPage({
           </button>
         ))}
         <div className="dash-sidenav-footer">
+          Προστατευμένη πρόσβαση
+          <br />
+          <strong style={{ color: "var(--white)" }}>Password Mode</strong>
+          <br />
+          <br />
           <strong>{tires.length} ελαστικά</strong> στον κατάλογο
           <br />
           <strong style={{ color: outOfStk > 0 ? "#fb923c" : "#4ade80" }}>{outOfStk}</strong> εκτός αποθέματος
+          <br />
+          <button
+            className="panel-head-action"
+            onClick={onSignOut}
+            style={{ marginTop: 14, width: "100%", justifyContent: "center" }}
+            type="button"
+          >
+            Αποσύνδεση
+          </button>
         </div>
       </div>
 
@@ -395,15 +416,37 @@ export default function DashboardPage({
                     className="big-input"
                     placeholder="https://example.com/tire.jpg ή /images/tire.jpg"
                     value={form.imageUrl}
-                    onChange={(e) => setF("imageUrl", e.target.value)}
+                    onChange={(e) =>
+                      setForm((current) => ({
+                        ...current,
+                        imageFile: null,
+                        imagePreviewUrl: "",
+                        imageUrl: e.target.value,
+                      }))
+                    }
                   />
                 </div>
-                {form.imageUrl && (
+                {(form.imagePreviewUrl || form.imageUrl) && (
                   <>
                     <div className="product-image-preview">
-                      <img src={form.imageUrl} alt={`${form.brand || "Ελαστικό"} ${form.name || ""}`.trim()} loading="lazy" />
+                      <img
+                        src={form.imagePreviewUrl || form.imageUrl}
+                        alt={`${form.brand || "Ελαστικό"} ${form.name || ""}`.trim()}
+                        loading="lazy"
+                      />
                     </div>
-                    <button type="button" className="big-cancel image-remove-btn" onClick={() => setF("imageUrl", "")}>
+                    <button
+                      type="button"
+                      className="big-cancel image-remove-btn"
+                      onClick={() =>
+                        setForm((current) => ({
+                          ...current,
+                          imageFile: null,
+                          imagePreviewUrl: "",
+                          imageUrl: "",
+                        }))
+                      }
+                    >
                       🗑 Αφαίρεση εικόνας
                     </button>
                   </>
@@ -572,8 +615,8 @@ export default function DashboardPage({
                   </div>
                 )}
                 <div className="submit-row">
-                  <button className="big-submit" onClick={handleAdd}>
-                    ✅ ΠΡΟΣΘΗΚΗ ΕΛΑΣΤΙΚΟΥ
+                  <button className="big-submit" onClick={handleAdd} disabled={isSaving}>
+                    {isSaving ? "ΑΠΟΘΗΚΕΥΣΗ..." : "✅ ΠΡΟΣΘΗΚΗ ΕΛΑΣΤΙΚΟΥ"}
                   </button>
                   <button
                     className="big-cancel"
@@ -581,6 +624,7 @@ export default function DashboardPage({
                       setForm(BLANK);
                       setFormErrors({});
                     }}
+                    disabled={isSaving}
                   >
                     🔄 Καθαρισμός
                   </button>

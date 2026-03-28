@@ -19,9 +19,28 @@ const loadImage = (src) =>
     image.src = src;
   });
 
-const estimateDataUrlBytes = (dataUrl) => {
-  const base64 = dataUrl.split(",")[1] || "";
-  return Math.ceil((base64.length * 3) / 4);
+const canvasToBlob = (canvas, type, quality) =>
+  new Promise((resolve, reject) => {
+    canvas.toBlob((blob) => {
+      if (!blob) {
+        reject(new Error("Αποτυχία επεξεργασίας εικόνας."));
+        return;
+      }
+
+      resolve(blob);
+    }, type, quality);
+  });
+
+const getOptimizedFileName = (name = "tire") => {
+  const baseName = name.replace(/\.[^.]+$/, "").trim() || "tire";
+  const safeName = baseName
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/[^a-zA-Z0-9-_]+/g, "-")
+    .replace(/^-+|-+$/g, "")
+    .toLowerCase();
+
+  return `${safeName || "tire"}.webp`;
 };
 
 export const optimizeImageFile = async (file) => {
@@ -54,12 +73,21 @@ export const optimizeImageFile = async (file) => {
   context.drawImage(image, 0, 0, width, height);
 
   let quality = 0.85;
-  let result = canvas.toDataURL("image/webp", quality);
+  let blob = await canvasToBlob(canvas, "image/webp", quality);
 
-  while (estimateDataUrlBytes(result) > TARGET_OUTPUT_BYTES && quality > MIN_QUALITY) {
+  while (blob.size > TARGET_OUTPUT_BYTES && quality > MIN_QUALITY) {
     quality = Math.max(MIN_QUALITY, quality - QUALITY_STEP);
-    result = canvas.toDataURL("image/webp", quality);
+    blob = await canvasToBlob(canvas, "image/webp", quality);
   }
 
-  return { dataUrl: result, bytes: estimateDataUrlBytes(result) };
+  const optimizedFile = new File([blob], getOptimizedFileName(file.name), {
+    type: "image/webp",
+    lastModified: Date.now(),
+  });
+
+  return {
+    bytes: optimizedFile.size,
+    file: optimizedFile,
+    previewUrl: URL.createObjectURL(optimizedFile),
+  };
 };

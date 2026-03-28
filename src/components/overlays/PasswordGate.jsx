@@ -1,13 +1,13 @@
 export default function PasswordGate({
   show,
-  pwShake,
-  pwVisible,
-  pwValue,
-  pwError,
-  setPwVisible,
-  setPwValue,
-  setPwError,
-  handlePwSubmit,
+  authShake,
+  passwordVisible,
+  passwordValue,
+  authError,
+  isSubmitting,
+  setPasswordVisible,
+  setPasswordValue,
+  handleSubmit,
   close,
 }) {
   if (!show) return null;
@@ -16,30 +16,27 @@ export default function PasswordGate({
     <div className="pw-overlay">
       <div className="pw-box">
         <div className="pw-icon">🔐</div>
-        <h2>ΔΙΑΧΕΙΡΙΣΗ</h2>
-        <p>Εισάγετε τον κωδικό πρόσβασης για να μπείτε στο διαχειριστικό panel.</p>
+        <h2>SUPABASE ADMIN</h2>
+        <p>Βάλε το admin password για να μπεις στο διαχειριστικό panel.</p>
         <div className="pw-field">
           <input
-            className={`pw-input ${pwShake ? "err" : ""}`}
-            type={pwVisible ? "text" : "password"}
-            placeholder="••••"
-            value={pwValue}
-            onChange={(e) => {
-              setPwValue(e.target.value);
-              setPwError("");
-            }}
-            onKeyDown={(e) => e.key === "Enter" && handlePwSubmit()}
+            className={`pw-input ${authShake ? "err" : ""}`}
+            type={passwordVisible ? "text" : "password"}
+            placeholder="••••••••"
+            value={passwordValue}
+            onChange={(event) => setPasswordValue(event.target.value)}
+            onKeyDown={(event) => event.key === "Enter" && handleSubmit()}
             autoFocus
           />
-          <button className="pw-toggle" onClick={() => setPwVisible((v) => !v)}>
-            {pwVisible ? "🙈" : "👁"}
+          <button className="pw-toggle" onClick={() => setPasswordVisible((value) => !value)} type="button">
+            {passwordVisible ? "🙈" : "👁"}
           </button>
         </div>
-        <div className="pw-err">{pwError}</div>
-        <button className="pw-submit" onClick={handlePwSubmit}>
-          ΕΙΣΟΔΟΣ →
+        <div className="pw-err">{authError}</div>
+        <button className="pw-submit" onClick={handleSubmit} disabled={isSubmitting}>
+          {isSubmitting ? "ΣΥΝΔΕΣΗ..." : "ΕΙΣΟΔΟΣ →"}
         </button>
-        <button className="pw-cancel" onClick={close}>
+        <button className="pw-cancel" onClick={close} type="button">
           Ακύρωση
         </button>
       </div>

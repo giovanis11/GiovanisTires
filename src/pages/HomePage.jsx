@@ -1,6 +1,6 @@
 import { ASPECTS, RIMS, WIDTHS } from "../constants/appData";
 
-export default function HomePage({ tiresLength, search, setSearch, setActiveSearch, setPage }) {
+export default function HomePage({ tiresLength, search, setSearch, setActiveSearch, setPage, isLoading }) {
   return (
     <>
       <section className="hero">
@@ -64,7 +64,7 @@ export default function HomePage({ tiresLength, search, setSearch, setActiveSear
         </div>
         <div className="stats">
           <div className="stat">
-            <div className="stat-num">{tiresLength}+</div>
+            <div className="stat-num">{isLoading ? "..." : `${tiresLength}+`}</div>
             <div className="stat-label">Προϊόντα</div>
           </div>
           <div className="stat">

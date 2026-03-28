@@ -2,7 +2,7 @@ import { useRef, useState } from "react";
 import { FUELS, TYPES, WETS } from "../../constants/appData";
 import { optimizeImageFile } from "../../utils/imageUpload";
 
-export default function EditTireModal({ tire, setEditTire, onClose, onSave }) {
+export default function EditTireModal({ tire, setEditTire, onClose, onSave, isSaving }) {
   const editImageInputRef = useRef(null);
   const [isUploadingImage, setIsUploadingImage] = useState(false);
   const [imageUploadError, setImageUploadError] = useState("");
@@ -16,8 +16,13 @@ export default function EditTireModal({ tire, setEditTire, onClose, onSave }) {
     setIsUploadingImage(true);
 
     try {
-      const { dataUrl } = await optimizeImageFile(file);
-      setEditTire((current) => ({ ...current, imageUrl: dataUrl }));
+      const { file: optimizedFile, previewUrl } = await optimizeImageFile(file);
+      setEditTire((current) => ({
+        ...current,
+        imageFile: optimizedFile,
+        imagePreviewUrl: previewUrl,
+        imageUrl: "",
+      }));
     } catch (error) {
       setImageUploadError(error instanceof Error ? error.message : "Αποτυχία ανεβάσματος εικόνας.");
     } finally {
@@ -66,9 +71,9 @@ export default function EditTireModal({ tire, setEditTire, onClose, onSave }) {
                 <span className="err-msg">⚠ {imageUploadError}</span>
               </div>
             )}
-            {tire.imageUrl && (
+            {(tire.imagePreviewUrl || tire.imageUrl) && (
               <div className="product-image-preview" style={{ gridColumn: "span 2", maxWidth: "100%", marginBottom: 0 }}>
-                <img src={tire.imageUrl} alt={`${tire.brand} ${tire.name}`} loading="lazy" />
+                <img src={tire.imagePreviewUrl || tire.imageUrl} alt={`${tire.brand} ${tire.name}`} loading="lazy" />
               </div>
             )}
             <div className="mf" style={{ gridColumn: "span 2" }}>
@@ -77,10 +82,28 @@ export default function EditTireModal({ tire, setEditTire, onClose, onSave }) {
                 type="url"
                 placeholder="https://example.com/tire.jpg ή /images/tire.jpg"
                 value={tire.imageUrl || ""}
-                onChange={(e) => setEditTire((t) => ({ ...t, imageUrl: e.target.value }))}
+                onChange={(e) =>
+                  setEditTire((current) => ({
+                    ...current,
+                    imageFile: null,
+                    imagePreviewUrl: "",
+                    imageUrl: e.target.value,
+                  }))
+                }
               />
-              {tire.imageUrl && (
-                <button type="button" className="modal-discard" onClick={() => setEditTire((t) => ({ ...t, imageUrl: "" }))}>
+              {(tire.imagePreviewUrl || tire.imageUrl) && (
+                <button
+                  type="button"
+                  className="modal-discard"
+                  onClick={() =>
+                    setEditTire((current) => ({
+                      ...current,
+                      imageFile: null,
+                      imagePreviewUrl: "",
+                      imageUrl: "",
+                    }))
+                  }
+                >
                   Αφαίρεση εικόνας
                 </button>
               )}
@@ -170,8 +193,8 @@ export default function EditTireModal({ tire, setEditTire, onClose, onSave }) {
           <button className="modal-discard" onClick={onClose}>
             Ακύρωση
           </button>
-          <button className="modal-save" onClick={onSave}>
-            💾 Αποθήκευση
+          <button className="modal-save" onClick={onSave} disabled={isSaving || isUploadingImage}>
+            {isSaving ? "Αποθήκευση..." : "💾 Αποθήκευση"}
           </button>
         </div>
       </div>
