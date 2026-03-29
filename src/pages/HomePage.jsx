@@ -12,6 +12,8 @@ export default function HomePage({ tiresLength, search, setSearch, setActiveSear
             ΕΛΑΣΤΙΚΑ
             <br />
             <em>ΓΙΟΒΑΝΗΣ</em>
+            <br />
+            <span className="hero-subname">ΘΟΔΩΡΗΣ</span>
           </h1>
           <p>
             Βρείτε το ιδανικό ελαστικό για το όχημά σας. Τεράστια επιλογή από τις κορυφαίες
@@ -264,14 +266,14 @@ export default function HomePage({ tiresLength, search, setSearch, setActiveSear
               {
                 icon: "📍",
                 title: "Διεύθυνση",
-                text: "Λεωφ. Αθηνών 142, Αθήνα 10441\nΔίπλα στο Μετρό Κεραμεικός",
+                text: "Κάρπου 22, Αθήνα 11631",
               },
-              { icon: "📞", title: "Τηλέφωνο", text: "210 123 4567\nΔευτ–Σάβ: 08:00–20:00" },
-              { icon: "✉️", title: "Email", text: "info@elastika-giovanis.gr" },
+              { icon: "📞", title: "Τηλέφωνο", text: "210 9015391\nΔευτ–Σάβ: 08:00–18:00" },
+              { icon: "✉️", title: "Email", text: "shozhos@gmail.com" },
               {
                 icon: "🕐",
                 title: "Ωράριο",
-                text: "Δευτέρα–Παρασκευή: 08:00–20:00\nΣάββατο: 08:00–15:00",
+                text: "Δευτέρα–Παρασκευή: 08:00–18:00\nΣάββατο: 08:00–14:00",
               },
             ].map((c, i) => (
               <div key={i} className="contact-item">
@@ -288,7 +290,7 @@ export default function HomePage({ tiresLength, search, setSearch, setActiveSear
               <h3>📍 Τοποθεσία Καταστήματος</h3>
               <a
                 className="contact-map-link"
-                href="https://www.google.com/maps/search/?api=1&query=%CE%9B%CE%B5%CF%89%CF%86.%20%CE%91%CE%B8%CE%B7%CE%BD%CF%8E%CE%BD%20142%2C%20%CE%91%CE%B8%CE%AE%CE%BD%CE%B1%2010441"
+                href="https://www.google.com/maps?ll=37.958283,23.736241&z=16&t=m&hl=el&gl=GR&mapclient=embed&cid=6139991713258396512"
                 target="_blank"
                 rel="noreferrer"
               >

@@ -10,12 +10,14 @@ export const appStyle = `
   }
   html, body, #root {
     width: 100%;
+    max-width: 100%;
     min-height: 100vh;
     margin: 0;
     padding: 0;
+    overflow-x: hidden;
     scroll-behavior: smooth;
   }
-  body { background:var(--black); color:var(--white); font-family:'Outfit',sans-serif; min-height:100vh; }
+  body { background:var(--black); color:var(--white); font-family:'Outfit',sans-serif; min-height:100vh; display:block; }
 
   /* ── NAV ── */
   .nav {
@@ -66,8 +68,9 @@ export const appStyle = `
   @keyframes spin { to { transform:translate(-50%,-50%) rotate(360deg); } }
   .hero-content { position:relative; z-index:1; text-align:center; max-width:860px; }
   .badge { display:inline-block; background:var(--red); color:white; font-size:11px; font-weight:700; letter-spacing:2px; text-transform:uppercase; padding:6px 16px; border-radius:2px; margin-bottom:24px; }
-  .hero h1 { font-family:'Bebas Neue',sans-serif; font-size:clamp(52px,9vw,100px); line-height:.9; letter-spacing:4px; margin-bottom:20px; }
+  .hero h1 { font-family:'Bebas Neue',sans-serif; font-size:clamp(48px,8.2vw,92px); line-height:.9; letter-spacing:4px; margin-bottom:20px; }
   .hero h1 em { color:var(--red); font-style:normal; }
+  .hero-subname { display:inline-block; font-size:.68em; letter-spacing:3px; color:var(--white); margin-top:2px; }
   .hero p { color:var(--gray-light); font-size:16px; font-weight:300; max-width:500px; margin:0 auto 48px; line-height:1.7; }
   .search-card { background:var(--gray); border:1px solid #2a2a2a; border-radius:12px; padding:28px 32px 24px; width:100%; max-width:820px; box-shadow:0 40px 80px rgba(0,0,0,.6); }
   .search-card h2 { font-size:12px; text-transform:uppercase; letter-spacing:2px; color:var(--gray-light); margin-bottom:18px; font-weight:500; }
@@ -567,7 +570,8 @@ export const appStyle = `
   }
   
   @media (max-width: 580px) {
-    .hero h1 { font-size:clamp(42px,12vw,70px); }
+    .hero h1 { font-size:clamp(38px,11vw,64px); }
+    .hero-subname { letter-spacing:2px; }
     .search-row { grid-template-columns:1fr; }
     .search-row .search-btn { grid-column:span 1; }
     .stat { padding:10px 14px; border-right:none; border-bottom:1px solid #222; width:50%; }
