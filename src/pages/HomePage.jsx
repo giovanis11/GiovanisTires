@@ -7,9 +7,9 @@ export default function HomePage({ tiresLength, search, setSearch, setActiveSear
         <div className="hero-bg" />
         <div className="tire-ring" />
         <div className="hero-content">
-          <div className="badge">🏎 Επαγγελματικά ελαστικά από το 1998</div>
+          <div className="badge">🏎 ΕΜΠΟΡΙΟ & SERVICE από το 1998</div>
           <h1>
-            ΕΛΑΣΤΙΚΑ
+            ΒΟΥΛΚΑΝΙΖΑΤΕΡ
             <br />
             <em>ΓΙΟΒΑΝΗΣ</em>
             <br />
