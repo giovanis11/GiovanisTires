@@ -1,8 +1,10 @@
 import { useEffect, useMemo, useState } from "react";
 import { appStyle } from "./styles/appStyle";
 import {
+  addCustomBrandToStorage,
   BLANK,
   INITIAL_TIRES,
+  loadCustomBrandsFromStorage,
   loadProductFormFromStorage,
   PRICE_FILTER_MAX,
   PRODUCT_FORM_STORAGE_KEY,
@@ -90,6 +92,7 @@ export default function App() {
   });
 
   const [form, setForm] = useState(() => loadProductFormFromStorage());
+  const [customBrands, setCustomBrands] = useState(() => loadCustomBrandsFromStorage());
   const [formErrors, setFormErrors] = useState({});
   const [toast, setToast] = useState(null);
   const [editTire, setEditTire] = useState(null);
@@ -276,6 +279,7 @@ export default function App() {
       const created = await createProduct(payload);
 
       setTires((items) => [created, ...items]);
+      setCustomBrands(addCustomBrandToStorage(payload.brand));
       setForm(BLANK);
       setFormErrors({});
       setDashTab("inventory");
@@ -595,6 +599,7 @@ export default function App() {
           maxBC={maxBC}
           formStep={formStep}
           form={form}
+          customBrands={customBrands}
           formErrors={formErrors}
           setF={setF}
           setForm={setForm}

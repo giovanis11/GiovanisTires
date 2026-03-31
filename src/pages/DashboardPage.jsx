@@ -26,6 +26,7 @@ export default function DashboardPage({
   maxBC,
   formStep,
   form,
+  customBrands,
   formErrors,
   setF,
   setForm,
@@ -49,6 +50,8 @@ export default function DashboardPage({
   const addImageInputRef = useRef(null);
   const [isUploadingImage, setIsUploadingImage] = useState(false);
   const [imageUploadError, setImageUploadError] = useState("");
+  const brandOptions = [...new Set([...BRANDS_LIST.filter((brand) => brand !== "Άλλη μάρκα"), ...customBrands, ...tires.map((tire) => tire.brand).filter(Boolean)])]
+    .sort((a, b) => a.localeCompare(b, "el"));
 
   const handleAddImageUpload = async (event) => {
     const file = event.target.files?.[0];
@@ -347,17 +350,19 @@ export default function DashboardPage({
                     <label className="big-label">
                       Μάρκα <span className="req">*</span>
                     </label>
-                    <p className="big-hint">Επίλεξε τη μάρκα</p>
-                    <select
-                      className={`big-select ${formErrors.brand ? "err" : ""}`}
+                    <p className="big-hint">Διάλεξε υπάρχουσα μάρκα ή γράψε νέα</p>
+                    <input
+                      list="brand-options"
+                      className={`big-input ${formErrors.brand ? "err" : ""}`}
+                      placeholder="π.χ. Michelin ή νέα μάρκα"
                       value={form.brand}
                       onChange={(e) => setF("brand", e.target.value)}
-                    >
-                      <option value="">👇 Επίλεξε μάρκα...</option>
-                      {BRANDS_LIST.map((b) => (
-                        <option key={b}>{b}</option>
+                    />
+                    <datalist id="brand-options">
+                      {brandOptions.map((brand) => (
+                        <option key={brand} value={brand} />
                       ))}
-                    </select>
+                    </datalist>
                     {formErrors.brand && <span className="err-msg">⚠ {formErrors.brand}</span>}
                   </div>
                   <div className="big-field">

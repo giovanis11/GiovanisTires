@@ -52,7 +52,22 @@ export const BLANK = {
 };
 
 export const PRODUCT_FORM_STORAGE_KEY = "giovanis-tires.product-form.v1";
+export const CUSTOM_BRANDS_STORAGE_KEY = "giovanis-tires.custom-brands.v1";
 export const PRICE_FILTER_MAX = 2000;
+const compareBrands = (a, b) => a.localeCompare(b, "el", { sensitivity: "base" });
+const normalizeBrand = (brand) => String(brand ?? "").trim();
+const uniqueBrands = (brands) => {
+  const list = [];
+
+  brands.forEach((brand) => {
+    const normalized = normalizeBrand(brand);
+    if (!normalized) return;
+    if (list.some((item) => compareBrands(item, normalized) === 0)) return;
+    list.push(normalized);
+  });
+
+  return list.sort(compareBrands);
+};
 
 export const serializeProductForm = (form) => ({
   ...BLANK,
@@ -75,4 +90,38 @@ export const loadProductFormFromStorage = () => {
   } catch {
     return BLANK;
   }
+};
+
+export const loadCustomBrandsFromStorage = () => {
+  if (typeof window === "undefined") return [];
+
+  try {
+    const raw = window.localStorage.getItem(CUSTOM_BRANDS_STORAGE_KEY);
+    if (!raw) return [];
+
+    const parsed = JSON.parse(raw);
+    if (!Array.isArray(parsed)) return [];
+
+    return uniqueBrands(parsed).filter(
+      (brand) => !BRANDS_LIST.some((existingBrand) => compareBrands(existingBrand, brand) === 0),
+    );
+  } catch {
+    return [];
+  }
+};
+
+export const addCustomBrandToStorage = (brand) => {
+  const normalizedBrand = normalizeBrand(brand);
+  if (!normalizedBrand) return loadCustomBrandsFromStorage();
+  if (BRANDS_LIST.some((existingBrand) => compareBrands(existingBrand, normalizedBrand) === 0)) {
+    return loadCustomBrandsFromStorage();
+  }
+
+  const nextBrands = uniqueBrands([...loadCustomBrandsFromStorage(), normalizedBrand]);
+
+  if (typeof window !== "undefined") {
+    window.localStorage.setItem(CUSTOM_BRANDS_STORAGE_KEY, JSON.stringify(nextBrands));
+  }
+
+  return nextBrands;
 };
