@@ -7,6 +7,8 @@ export const appStyle = `
     --sidebar-bg:#0e0e0e; --accent:#f0c040;
     --green:#16a34a; --green-light:#dcfce7; --green-bg:#052e16;
     --blue:#3b82f6; --orange:#f97316; --orange-bg:#431407;
+    --top-strip-height:34px;
+    --header-stack:96px;
   }
   html, body, #root {
     width: 100%;
@@ -20,8 +22,18 @@ export const appStyle = `
   body { background:var(--black); color:var(--white); font-family:'Outfit',sans-serif; min-height:100vh; display:block; }
 
   /* ── NAV ── */
+  .top-contact-bar {
+    position:fixed; top:0; left:0; right:0; z-index:210;
+    height:var(--top-strip-height); display:flex; align-items:center; justify-content:center; gap:10px;
+    padding:0 18px; background:#060606; border-bottom:1px solid #171717;
+    font-size:12px; letter-spacing:.6px; color:#b4b4b4;
+  }
+  .top-contact-bar a {
+    color:var(--white); font-weight:700; text-decoration:none; transition:color .2s;
+  }
+  .top-contact-bar a:hover { color:var(--red-soft); }
   .nav {
-    position:fixed; top:0; left:0; right:0; z-index:200;
+    position:fixed; top:var(--top-strip-height); left:0; right:0; z-index:200;
     display:flex; align-items:center; justify-content:space-between;
     padding:14px 36px;
     background:rgba(10,10,10,.97); backdrop-filter:blur(12px);
@@ -49,7 +61,7 @@ export const appStyle = `
   .hamburger.open span:nth-child(3) { transform:translateY(-7px) rotate(-45deg); }
   
   .mobile-menu {
-    display:none; position:fixed; top:62px; left:0; right:0; z-index:190;
+    display:none; position:fixed; top:var(--header-stack); left:0; right:0; z-index:190;
     background:rgba(10,10,10,.98); backdrop-filter:blur(12px);
     border-bottom:1px solid var(--border);
     flex-direction:column; padding:16px 24px 20px; gap:4px;
@@ -175,8 +187,8 @@ export const appStyle = `
   .footer-made { font-size:12px; color:#333; }
 
   /* ── PRODUCTS PAGE ── */
-  .products-page { padding-top:62px; min-height:100vh; display:flex; flex-direction:column; }
-  .products-topbar { display:flex; align-items:center; gap:14px; padding:12px 22px; border-bottom:1px solid var(--border); background:rgba(10,10,10,.98); position:sticky; top:62px; z-index:100; flex-wrap:wrap; }
+  .products-page { padding-top:var(--header-stack); min-height:100vh; display:flex; flex-direction:column; }
+  .products-topbar { display:flex; align-items:center; gap:14px; padding:12px 22px; border-bottom:1px solid var(--border); background:rgba(10,10,10,.98); position:sticky; top:var(--header-stack); z-index:100; flex-wrap:wrap; }
   .back-btn { background:none; border:1px solid #333; color:var(--gray-light); font-family:'Outfit',sans-serif; font-size:12px; padding:7px 14px; border-radius:4px; cursor:pointer; transition:all .2s; letter-spacing:1px; text-transform:uppercase; display:inline-flex; align-items:center; gap:6px; flex-shrink:0; }
   .back-btn:hover { border-color:var(--white); color:var(--white); }
   .topbar-title { font-family:'Bebas Neue',sans-serif; font-size:22px; letter-spacing:2px; }
@@ -198,7 +210,7 @@ export const appStyle = `
   .mob-filter-overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,.7); z-index:300; }
   .mob-filter-overlay.open { display:block; }
   
-  .sidebar { width:248px; flex-shrink:0; background:var(--sidebar-bg); border-right:1px solid var(--border); position:sticky; top:110px; height:calc(100vh - 110px); overflow-y:auto; transition:transform .3s; }
+  .sidebar { width:248px; flex-shrink:0; background:var(--sidebar-bg); border-right:1px solid var(--border); position:sticky; top:144px; height:calc(100vh - 144px); overflow-y:auto; transition:transform .3s; }
   .sidebar::-webkit-scrollbar { width:3px; }
   .sidebar::-webkit-scrollbar-thumb { background:#2a2a2a; border-radius:2px; }
   .sidebar-search { padding:12px 14px; border-bottom:1px solid var(--border); }
@@ -289,11 +301,11 @@ export const appStyle = `
   /* ════════════════════════════════════
      DASHBOARD
   ════════════════════════════════════ */
-  .dash-wrap { padding-top:62px; min-height:100vh; display:flex; background:#0d0d0d; }
+  .dash-wrap { padding-top:var(--header-stack); min-height:100vh; display:flex; background:#0d0d0d; }
   .dash-sidenav {
     width:200px; flex-shrink:0; background:#080808;
     border-right:1px solid #1a1a1a;
-    position:sticky; top:62px; height:calc(100vh - 62px);
+    position:sticky; top:var(--header-stack); height:calc(100vh - var(--header-stack));
     display:flex; flex-direction:column;
     padding:20px 0;
   }
@@ -513,6 +525,9 @@ export const appStyle = `
      RESPONSIVE
   ════════════ */
   @media (max-width: 900px) {
+    :root { --top-strip-height:30px; --header-stack:90px; }
+    .top-contact-bar { height:30px; font-size:11px; gap:8px; padding:0 12px; }
+    .top-contact-bar span { display:none; }
     .nav { padding:12px 20px; }
     .nav-links { display:none; }
     .hamburger { display:flex; }

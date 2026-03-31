@@ -1,6 +1,11 @@
 export default function Header({ page, menuOpen, setMenuOpen, setPage, handleDashClick }) {
   return (
     <>
+      <div className="top-contact-bar">
+        <span>Τηλέφωνο εξυπηρέτησης</span>
+        <a href="tel:2109015391">210 9015391</a>
+      </div>
+
       <nav className="nav">
         <div
           className="logo"
