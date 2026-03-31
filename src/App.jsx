@@ -22,6 +22,7 @@ import { createProduct, deleteProduct, listProducts, updateProduct, uploadProduc
 
 const DASHBOARD_UNLOCK_KEY = "giovanis-tires.dashboard-unlocked";
 const configuredAdminPassword = import.meta.env.VITE_ADMIN_PASSWORD || "2003";
+const normalizeRimValue = (value) => String(value ?? "").trim().replace(/^R/i, "");
 
 const getErrorMessage = (error, fallback) => {
   if (error instanceof Error && error.message) return error.message;
@@ -323,11 +324,20 @@ export default function App() {
     }
   };
 
+  const normalizedActiveSearch = useMemo(() => {
+    if (!activeSearch) return null;
+
+    return {
+      ...activeSearch,
+      rim: normalizeRimValue(activeSearch.rim),
+    };
+  }, [activeSearch]);
+
   const filteredProducts = useMemo(() => {
     let list = tires.filter((tire) => {
-      if (activeSearch?.width && tire.width !== activeSearch.width) return false;
-      if (activeSearch?.aspect && tire.aspect !== activeSearch.aspect) return false;
-      if (activeSearch?.rim && tire.rim !== activeSearch.rim) return false;
+      if (normalizedActiveSearch?.width && tire.width !== normalizedActiveSearch.width) return false;
+      if (normalizedActiveSearch?.aspect && tire.aspect !== normalizedActiveSearch.aspect) return false;
+      if (normalizedActiveSearch?.rim && tire.rim !== normalizedActiveSearch.rim) return false;
       if (filters.brands.length && !filters.brands.includes(tire.brand)) return false;
       if (filters.types.length && !filters.types.includes(tire.type)) return false;
       if (tire.price < filters.priceMin || tire.price > filters.priceMax) return false;
@@ -345,7 +355,7 @@ export default function App() {
     if (sortBy === "name") list = [...list].sort((a, b) => a.name.localeCompare(b.name));
 
     return list;
-  }, [tires, activeSearch, filters, sortBy]);
+  }, [tires, normalizedActiveSearch, filters, sortBy]);
 
   const brandCounts = useMemo(() => {
     const counts = {};
@@ -380,9 +390,9 @@ export default function App() {
   }, [tires]);
 
   const chips = [];
-  if (activeSearch?.width) chips.push({ label: `Πλάτος ${activeSearch.width}`, clear: () => setActiveSearch((current) => ({ ...current, width: "" })) });
-  if (activeSearch?.aspect) chips.push({ label: `Ύψος ${activeSearch.aspect}`, clear: () => setActiveSearch((current) => ({ ...current, aspect: "" })) });
-  if (activeSearch?.rim) chips.push({ label: `R${activeSearch.rim}`, clear: () => setActiveSearch((current) => ({ ...current, rim: "" })) });
+  if (normalizedActiveSearch?.width) chips.push({ label: `Πλάτος ${normalizedActiveSearch.width}`, clear: () => setActiveSearch((current) => ({ ...current, width: "" })) });
+  if (normalizedActiveSearch?.aspect) chips.push({ label: `Ύψος ${normalizedActiveSearch.aspect}`, clear: () => setActiveSearch((current) => ({ ...current, aspect: "" })) });
+  if (normalizedActiveSearch?.rim) chips.push({ label: `R${normalizedActiveSearch.rim}`, clear: () => setActiveSearch((current) => ({ ...current, rim: "" })) });
   filters.brands.forEach((brand) => chips.push({ label: brand, clear: () => toggle("brands", brand) }));
   filters.types.forEach((type) => chips.push({ label: type, clear: () => toggle("types", type) }));
   filters.widths.forEach((width) => chips.push({ label: `${width}mm`, clear: () => toggle("widths", width) }));
@@ -416,7 +426,9 @@ export default function App() {
     setActiveSearch(null);
   };
 
-  const searchLabel = activeSearch ? [activeSearch.width, activeSearch.aspect, activeSearch.rim].filter(Boolean).join("/") : "";
+  const searchLabel = normalizedActiveSearch
+    ? [normalizedActiveSearch.width, normalizedActiveSearch.aspect, normalizedActiveSearch.rim].filter(Boolean).join("/")
+    : "";
   const filtBrands = [...new Set(tires.map((tire) => tire.brand))]
     .sort()
     .filter((brand) => brand.toLowerCase().includes(brandSearch.toLowerCase()));

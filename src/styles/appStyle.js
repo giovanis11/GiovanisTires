@@ -70,7 +70,8 @@ export const appStyle = `
   .badge { display:inline-block; background:var(--red); color:white; font-size:11px; font-weight:700; letter-spacing:2px; text-transform:uppercase; padding:6px 16px; border-radius:2px; margin-bottom:24px; }
   .hero h1 { font-family:'Bebas Neue',sans-serif; font-size:clamp(48px,8.2vw,92px); line-height:.9; letter-spacing:4px; margin-bottom:20px; }
   .hero h1 em { color:var(--red); font-style:normal; }
-  .hero-subname { display:inline-block; font-size:.68em; letter-spacing:3px; color:var(--white); margin-top:2px; }
+  .hero-name { display:inline-flex; align-items:baseline; gap:.16em; white-space:nowrap; font-size:.8em; }
+  .hero-subname { display:inline-block; font-size:.68em; letter-spacing:3px; color:var(--white); }
   .hero p { color:var(--gray-light); font-size:16px; font-weight:300; max-width:500px; margin:0 auto 48px; line-height:1.7; }
   .search-card { background:var(--gray); border:1px solid #2a2a2a; border-radius:12px; padding:28px 32px 24px; width:100%; max-width:820px; box-shadow:0 40px 80px rgba(0,0,0,.6); }
   .search-card h2 { font-size:12px; text-transform:uppercase; letter-spacing:2px; color:var(--gray-light); margin-bottom:18px; font-weight:500; }
@@ -570,8 +571,9 @@ export const appStyle = `
   }
   
   @media (max-width: 580px) {
-    .hero h1 { font-size:clamp(38px,11vw,64px); }
-    .hero-subname { letter-spacing:2px; }
+    .hero h1 { font-size:clamp(34px,10vw,56px); letter-spacing:2px; line-height:.95; }
+    .hero-name { font-size:.66em; gap:.1em; }
+    .hero-subname { letter-spacing:1.5px; }
     .search-row { grid-template-columns:1fr; }
     .search-row .search-btn { grid-column:span 1; }
     .stat { padding:10px 14px; border-right:none; border-bottom:1px solid #222; width:50%; }
@@ -590,5 +592,11 @@ export const appStyle = `
     .tire-row-actions { width:100%; justify-content:flex-end; }
     
     .kpi-grid { grid-template-columns:1fr 1fr; }
+  }
+
+  @media (max-width: 420px) {
+    .hero h1 { font-size:clamp(30px,9.5vw,46px); letter-spacing:1.5px; }
+    .hero-name { font-size:.62em; gap:.08em; }
+    .hero-subname { letter-spacing:1px; }
   }
 `;

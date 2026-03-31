@@ -11,9 +11,10 @@ export default function HomePage({ tiresLength, search, setSearch, setActiveSear
           <h1>
             ΒΟΥΛΚΑΝΙΖΑΤΕΡ
             <br />
-            <em>ΓΙΟΒΑΝΗΣ</em>
-            <br />
-            <span className="hero-subname">ΘΟΔΩΡΗΣ</span>
+            <span className="hero-name">
+              <em>ΓΙΟΒΑΝΗΣ</em>
+              <span className="hero-subname">ΘΟΔΩΡΗΣ</span>
+            </span>
           </h1>
           <p>
             Βρείτε το ιδανικό ελαστικό για το όχημά σας. Τεράστια επιλογή από τις κορυφαίες
@@ -48,14 +49,16 @@ export default function HomePage({ tiresLength, search, setSearch, setActiveSear
                 <select value={search.rim} onChange={(e) => setSearch((s) => ({ ...s, rim: e.target.value }))}>
                   <option value="">π.χ. 17</option>
                   {RIMS.map((r) => (
-                    <option key={r}>R{r}</option>
+                    <option key={r} value={r}>
+                      R{r}
+                    </option>
                   ))}
                 </select>
               </div>
               <button
                 className="search-btn"
                 onClick={() => {
-                  setActiveSearch({ ...search });
+                  setActiveSearch({ ...search, rim: search.rim.replace(/^R/i, "") });
                   setPage("products");
                 }}
               >
