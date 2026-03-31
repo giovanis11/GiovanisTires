@@ -237,28 +237,28 @@ export const appStyle = `
   .view-btn { background:#1a1a1a; border:1px solid #2a2a2a; border-radius:4px; padding:5px 10px; cursor:pointer; color:var(--gray-light); font-size:12px; transition:all .15px; }
   .view-btn.active { border-color:var(--red); color:var(--red); background:#1e0508; }
   .view-btn:hover:not(.active) { border-color:#444; color:var(--white); }
-  .products-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(210px,1fr)); gap:14px; }
+  .products-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(260px,1fr)); gap:18px; }
   .products-grid.list { grid-template-columns:1fr; }
-  .product-card { background:#141414; border:1px solid #1e1e1e; border-radius:10px; overflow:hidden; transition:border-color .2s, transform .2s, box-shadow .2s; cursor:pointer; }
+  .product-card { background:#141414; border:1px solid #1e1e1e; border-radius:14px; overflow:hidden; transition:border-color .2s, transform .2s, box-shadow .2s; cursor:pointer; }
   .product-card:hover { border-color:#e8192c44; transform:translateY(-2px); box-shadow:0 8px 24px rgba(232,25,44,.08); }
   .product-card.lc { display:flex; flex-direction:row; }
-  .product-img { background:linear-gradient(135deg,#0f0f0f 0%,#1a1a1a 100%); height:160px; display:flex; align-items:center; justify-content:center; font-size:68px; position:relative; overflow:hidden; flex-shrink:0; }
+  .product-img { background:linear-gradient(135deg,#0f0f0f 0%,#1a1a1a 100%); height:210px; display:flex; align-items:center; justify-content:center; font-size:82px; position:relative; overflow:hidden; flex-shrink:0; }
   .product-img::after { content:''; position:absolute; inset:0; background:radial-gradient(circle at center, transparent 40%, rgba(0,0,0,.25) 100%); }
   .product-thumb { width:100%; height:100%; object-fit:cover; position:relative; z-index:1; }
-  .lc .product-img { width:140px; height:auto; }
-  .product-info { padding:13px; flex:1; display:flex; flex-direction:column; }
-  .brand-tag { font-size:9px; text-transform:uppercase; letter-spacing:2px; color:var(--red); font-weight:700; margin-bottom:3px; }
-  .product-name { font-size:13px; font-weight:600; margin-bottom:2px; line-height:1.3; }
-  .product-dim { font-size:11px; color:var(--gray-light); margin-bottom:8px; }
-  .label-row { display:flex; gap:3px; flex-wrap:wrap; margin-bottom:10px; }
-  .lbadge { font-size:9px; padding:2px 5px; border-radius:3px; font-weight:700; letter-spacing:.5px; text-transform:uppercase; }
+  .lc .product-img { width:180px; height:auto; }
+  .product-info { padding:18px; flex:1; display:flex; flex-direction:column; }
+  .brand-tag { font-size:11px; text-transform:uppercase; letter-spacing:2px; color:var(--red); font-weight:700; margin-bottom:6px; }
+  .product-name { font-size:18px; font-weight:600; margin-bottom:5px; line-height:1.3; }
+  .product-dim { font-size:14px; color:var(--gray-light); margin-bottom:12px; }
+  .label-row { display:flex; gap:6px; flex-wrap:wrap; margin-bottom:14px; }
+  .lbadge { font-size:11px; padding:4px 7px; border-radius:4px; font-weight:700; letter-spacing:.5px; text-transform:uppercase; }
   .lb-f-A{background:#052e16;color:#4ade80;} .lb-f-B{background:#14532d;color:#86efac;} .lb-f-C{background:#713f12;color:#fcd34d;} .lb-f-D{background:#7f1d1d;color:#fca5a5;}
   .lb-w-A{background:#172554;color:#93c5fd;} .lb-w-B{background:#1e3a8a;color:#bfdbfe;} .lb-w-C{background:#3b0764;color:#d8b4fe;}
   .lb-noise{background:#1c1917;color:#a8a29e;border:1px solid #292524;} .lb-info{background:#1c1917;color:#78716c;border:1px solid #1e1e1e;}
-  .product-footer { display:flex; align-items:center; justify-content:space-between; margin-top:auto; }
-  .price { font-family:'Bebas Neue',sans-serif; font-size:20px; color:var(--accent); letter-spacing:1px; }
-  .price span { font-family:'Outfit',sans-serif; font-size:11px; color:var(--gray-light); }
-  .buy-btn { background:var(--red); border:none; border-radius:4px; color:white; font-weight:600; font-size:11px; padding:6px 12px; cursor:pointer; transition:background .2s; font-family:'Outfit',sans-serif; white-space:nowrap; }
+  .product-footer { display:flex; align-items:center; justify-content:space-between; margin-top:auto; gap:12px; }
+  .price { font-family:'Bebas Neue',sans-serif; font-size:28px; color:var(--accent); letter-spacing:1px; }
+  .price span { font-family:'Outfit',sans-serif; font-size:13px; color:var(--gray-light); }
+  .buy-btn { background:var(--red); border:none; border-radius:6px; color:white; font-weight:600; font-size:13px; padding:9px 16px; cursor:pointer; transition:background .2s; font-family:'Outfit',sans-serif; white-space:nowrap; }
   .buy-btn:hover { background:var(--red-dark); }
   .no-results { text-align:center; padding:80px 0; }
   .no-results .emoji { font-size:56px; margin-bottom:16px; }
@@ -586,7 +586,7 @@ export const appStyle = `
     .footer-grid { grid-template-columns:1fr; }
     
     .fg3 { grid-template-columns:1fr; }
-    .products-grid { grid-template-columns:repeat(auto-fill,minmax(160px,1fr)); }
+    .products-grid { grid-template-columns:1fr; }
     
     .tire-row { flex-wrap:wrap; }
     .tire-row-actions { width:100%; justify-content:flex-end; }
