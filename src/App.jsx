@@ -519,6 +519,11 @@ export default function App() {
         setEditTire={setEditTire}
         onClose={() => setEditTire(null)}
         onSave={handleEditSave}
+        onDeleteRequest={() => {
+          if (!editTire) return;
+          setDelTire(editTire);
+          setEditTire(null);
+        }}
         isSaving={isSaving}
       />
 

@@ -2,7 +2,7 @@ import { useRef, useState } from "react";
 import { FUELS, TYPES, WETS } from "../../constants/appData";
 import { optimizeImageFile } from "../../utils/imageUpload";
 
-export default function EditTireModal({ tire, setEditTire, onClose, onSave, isSaving }) {
+export default function EditTireModal({ tire, setEditTire, onClose, onSave, onDeleteRequest, isSaving }) {
   const editImageInputRef = useRef(null);
   const [isUploadingImage, setIsUploadingImage] = useState(false);
   const [imageUploadError, setImageUploadError] = useState("");
@@ -190,6 +190,9 @@ export default function EditTireModal({ tire, setEditTire, onClose, onSave, isSa
           </div>
         </div>
         <div className="modal-ftr">
+          <button className="modal-delete" onClick={onDeleteRequest} disabled={isSaving || isUploadingImage}>
+            🗑 Διαγραφή
+          </button>
           <button className="modal-discard" onClick={onClose}>
             Ακύρωση
           </button>
