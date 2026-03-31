@@ -26,10 +26,10 @@ export const appStyle = `
     position:fixed; top:0; left:0; right:0; z-index:210;
     height:var(--top-strip-height); display:flex; align-items:center; justify-content:center; gap:10px;
     padding:0 18px; background:#060606; border-bottom:1px solid #171717;
-    font-size:12px; letter-spacing:.6px; color:#b4b4b4;
+    font-size:14px; letter-spacing:.6px; color:#b4b4b4;
   }
   .top-contact-bar a {
-    color:var(--white); font-weight:700; text-decoration:none; transition:color .2s;
+    color:var(--white); font-size:15px; font-weight:700; text-decoration:none; transition:color .2s;
   }
   .top-contact-bar a:hover { color:var(--red-soft); }
   .nav {
@@ -162,11 +162,11 @@ export const appStyle = `
   .contact-section .sec-header .eyebrow { font-size:11px; text-transform:uppercase; letter-spacing:3px; color:var(--red); font-weight:700; margin-bottom:14px; }
   .contact-section .sec-header h2 { font-family:'Bebas Neue',sans-serif; font-size:clamp(36px,5vw,56px); letter-spacing:3px; }
   .contact-grid { display:grid; grid-template-columns:1fr 1fr; gap:32px; max-width:900px; margin:0 auto; }
-  .contact-info { display:flex; flex-direction:column; gap:20px; }
-  .contact-item { display:flex; gap:16px; align-items:flex-start; }
-  .contact-ico { font-size:26px; flex-shrink:0; }
-  .contact-detail h4 { font-size:14px; font-weight:700; margin-bottom:4px; }
-  .contact-detail p { color:var(--gray-light); font-size:13px; line-height:1.6; }
+  .contact-info { display:flex; flex-direction:column; gap:28px; }
+  .contact-item { display:flex; gap:20px; align-items:flex-start; }
+  .contact-ico { font-size:34px; flex-shrink:0; line-height:1; }
+  .contact-detail h4 { font-size:20px; font-weight:700; margin-bottom:8px; }
+  .contact-detail p { color:var(--gray-light); font-size:18px; line-height:1.7; }
   .contact-map-card { background:#111; border:1px solid #1e1e1e; border-radius:14px; overflow:hidden; display:flex; flex-direction:column; min-height:340px; }
   .contact-map-head { padding:14px 16px; border-bottom:1px solid #1e1e1e; display:flex; align-items:center; justify-content:space-between; gap:12px; }
   .contact-map-head h3 { font-size:14px; font-weight:700; }
@@ -176,15 +176,15 @@ export const appStyle = `
 
   /* FOOTER */
   .footer { background:#060606; border-top:1px solid #1a1a1a; padding:48px 48px 28px; }
-  .footer-grid { display:grid; grid-template-columns:2fr 1fr 1fr; gap:40px; margin-bottom:40px; }
+  .footer-grid { display:grid; grid-template-columns:2fr 1fr; gap:40px; margin-bottom:40px; }
   .footer-brand { max-width:280px; }
   .footer-brand p { color:var(--gray-light); font-size:13px; line-height:1.7; margin-top:12px; }
   .footer-col h4 { font-size:11px; text-transform:uppercase; letter-spacing:2px; color:#555; font-weight:700; margin-bottom:16px; }
   .footer-col a { display:block; color:#666; font-size:13px; margin-bottom:10px; cursor:pointer; transition:color .2s; text-decoration:none; }
   .footer-col a:hover { color:var(--white); }
   .footer-bottom { border-top:1px solid #1a1a1a; padding-top:24px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px; }
-  .footer-copy { font-size:12px; color:#333; }
-  .footer-made { font-size:12px; color:#333; }
+  .footer-copy { font-size:15px; color:#5c5c5c; }
+  .footer-made { font-size:15px; color:#5c5c5c; }
 
   /* ── PRODUCTS PAGE ── */
   .products-page { padding-top:var(--header-stack); min-height:100vh; display:flex; flex-direction:column; }

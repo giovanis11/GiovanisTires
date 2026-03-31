@@ -77,7 +77,7 @@ export default function HomePage({ tiresLength, search, setSearch, setActiveSear
             <div className="stat-label">Μάρκες</div>
           </div>
           <div className="stat">
-            <div className="stat-num">12ΩΡΟ</div>
+            <div className="stat-num">10ΩΡΟ</div>
             <div className="stat-label">Εξυπηρέτηση</div>
           </div>
           <div className="stat">
@@ -346,12 +346,6 @@ export default function HomePage({ tiresLength, search, setSearch, setActiveSear
             <a onClick={() => document.getElementById("contact-section")?.scrollIntoView({ behavior: "smooth" })}>
               Επικοινωνία
             </a>
-          </div>
-          <div className="footer-col">
-            <h4>Μάρκες</h4>
-            {["Michelin", "Continental", "Pirelli", "Goodyear", "Bridgestone"].map((b) => (
-              <a key={b}>{b}</a>
-            ))}
           </div>
         </div>
         <div className="footer-bottom">
