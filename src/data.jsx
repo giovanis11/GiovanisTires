@@ -26,7 +26,7 @@ export const BRAND_ICONS = {
 
 export const WIDTHS  = ["175","185","195","205","215","225","235","245","255","265","275","285","295","305"];
 export const ASPECTS = ["35","40","45","50","55","60","65","70","75","80"];
-export const RIMS    = ["14","15","16","17","18","19","20","21","22"];
+export const RIMS    = ["13","14","15","16","17","18","19","20","21","22"];
 export const TYPES   = ["Θερινό","Χειμερινό","All Season"];
 
 export const BRANDS_LIST = [
