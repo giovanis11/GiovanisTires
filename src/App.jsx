@@ -25,6 +25,8 @@ import { createProduct, deleteProduct, listProducts, updateProduct, uploadProduc
 const DASHBOARD_UNLOCK_KEY = "giovanis-tires.dashboard-unlocked";
 const configuredAdminPassword = import.meta.env.VITE_ADMIN_PASSWORD || "2003";
 const normalizeRimValue = (value) => String(value ?? "").trim().replace(/^R/i, "");
+const normalizeTireType = (value) => (value === "Καλοκαιρινό" ? "Θερινό" : value);
+const normalizeTireRecord = (tire) => ({ ...tire, type: normalizeTireType(tire.type) });
 
 const getErrorMessage = (error, fallback) => {
   if (error instanceof Error && error.message) return error.message;
@@ -41,7 +43,7 @@ const normalizeTireInput = (values, imageUrl) => ({
   width: values.width,
   aspect: values.aspect,
   rim: String(values.rim).replace(/^R/i, ""),
-  type: values.type,
+  type: normalizeTireType(values.type),
   price: Number(values.price),
   stock: Number(values.stock),
   fuel: values.fuel || "A",
@@ -56,7 +58,7 @@ const normalizeTireInput = (values, imageUrl) => ({
 export default function App() {
   const [page, setPage] = useState("home");
   const [dashTab, setDashTab] = useState("overview");
-  const [tires, setTires] = useState(() => (isSupabaseConfigured ? [] : INITIAL_TIRES));
+  const [tires, setTires] = useState(() => (isSupabaseConfigured ? [] : INITIAL_TIRES.map(normalizeTireRecord)));
   const [productsLoading, setProductsLoading] = useState(isSupabaseConfigured);
   const [dataError, setDataError] = useState("");
   const [menuOpen, setMenuOpen] = useState(false);
@@ -141,7 +143,7 @@ export default function App() {
   useEffect(() => {
     if (!isSupabaseConfigured) {
       setProductsLoading(false);
-      setTires(INITIAL_TIRES);
+      setTires(INITIAL_TIRES.map(normalizeTireRecord));
       setDataError("");
       return;
     }
@@ -154,7 +156,7 @@ export default function App() {
         const items = await listProducts();
         if (!isMounted) return;
 
-        setTires(items);
+        setTires(items.map(normalizeTireRecord));
         setDataError("");
       } catch (error) {
         if (!isMounted) return;
@@ -236,7 +238,6 @@ export default function App() {
     const errors = {};
 
     if (!form.brand.trim()) errors.brand = "Επιλέξτε μάρκα";
-    if (!form.name.trim()) errors.name = "Πληκτρολογήστε μοντέλο";
     if (!form.width) errors.width = "Επιλέξτε πλάτος";
     if (!form.aspect) errors.aspect = "Επιλέξτε ύψος";
     if (!form.rim) errors.rim = "Επιλέξτε ζάντα";
@@ -278,7 +279,7 @@ export default function App() {
       const payload = normalizeTireInput(form, imageUrl);
       const created = await createProduct(payload);
 
-      setTires((items) => [created, ...items]);
+      setTires((items) => [normalizeTireRecord(created), ...items]);
       setCustomBrands(addCustomBrandToStorage(payload.brand));
       setForm(BLANK);
       setFormErrors({});
@@ -301,7 +302,7 @@ export default function App() {
       const payload = normalizeTireInput(editTire, imageUrl);
       const updated = await updateProduct(editTire.id, payload);
 
-      setTires((items) => items.map((item) => (item.id === updated.id ? updated : item)));
+      setTires((items) => items.map((item) => (item.id === updated.id ? normalizeTireRecord(updated) : item)));
       showToast("💾 Αποθηκεύτηκε!", `${updated.brand} ${updated.name}`);
       setEditTire(null);
     } catch (error) {

@@ -367,12 +367,12 @@ export default function DashboardPage({
                   </div>
                   <div className="big-field">
                     <label className="big-label">
-                      Μοντέλο <span className="req">*</span>
+                      Μοντέλο <span style={{ color: "#555", fontSize: 12, fontWeight: 400 }}>(προαιρετικό)</span>
                     </label>
-                    <p className="big-hint">π.χ. Pilot Sport 5</p>
+                    <p className="big-hint">Άφησέ το κενό αν δεν θέλεις να βάλεις μοντέλο</p>
                     <input
                       className={`big-input ${formErrors.name ? "err" : ""}`}
-                      placeholder="Γράψε το μοντέλο..."
+                      placeholder="π.χ. Pilot Sport 5"
                       value={form.name}
                       onChange={(e) => setF("name", e.target.value)}
                     />
