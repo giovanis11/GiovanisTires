@@ -90,7 +90,7 @@ export default function ProductsSidebar({
         </div>
       </FilterGroup>
       <FilterGroup title="Πλάτος (mm)" count={filters.widths.length}>
-        {["205", "215", "225", "235", "245"].map((w) => (
+        {["155", "205", "215", "225", "235", "245"].map((w) => (
           <CheckOpt
             key={w}
             label={`${w} mm`}
