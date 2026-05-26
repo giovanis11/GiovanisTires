@@ -24,6 +24,11 @@ import { createProduct, deleteProduct, listProducts, updateProduct, uploadProduc
 
 const DASHBOARD_UNLOCK_KEY = "giovanis-tires.dashboard-unlocked";
 const configuredAdminPassword = import.meta.env.VITE_ADMIN_PASSWORD || "2003";
+const pageToPath = { home: "/", products: "/products" };
+const getInitialPage = () => {
+  if (typeof window === "undefined") return "home";
+  return window.location.pathname === "/products" ? "products" : "home";
+};
 const normalizeRimValue = (value) => String(value ?? "").trim().replace(/^R/i, "");
 const normalizeTireType = (value) => (value === "Καλοκαιρινό" ? "Θερινό" : value);
 const normalizeTireRecord = (tire) => ({ ...tire, type: normalizeTireType(tire.type) });
@@ -56,7 +61,7 @@ const normalizeTireInput = (values, imageUrl) => ({
 });
 
 export default function App() {
-  const [page, setPage] = useState("home");
+  const [page, setPage] = useState(getInitialPage);
   const [dashTab, setDashTab] = useState("overview");
   const [tires, setTires] = useState(() => (isSupabaseConfigured ? [] : INITIAL_TIRES.map(normalizeTireRecord)));
   const [productsLoading, setProductsLoading] = useState(isSupabaseConfigured);
@@ -105,6 +110,16 @@ export default function App() {
   const [dimApplied, setDimApplied] = useState(null);
   const [openBrands, setOpenBrands] = useState({});
 
+  const navigateToPage = (nextPage) => {
+    setPage(nextPage);
+    setMenuOpen(false);
+
+    const nextPath = pageToPath[nextPage];
+    if (!nextPath || typeof window === "undefined" || window.location.pathname === nextPath) return;
+
+    window.history.pushState({ page: nextPage }, "", nextPath);
+  };
+
   const toggleBrand = (brand) => setOpenBrands((state) => ({ ...state, [brand]: !state[brand] }));
   const toggle = (key, value) => {
     setFilters((current) => ({
@@ -128,6 +143,14 @@ export default function App() {
       // Ignore storage write failures (private mode/quota).
     }
   }, [form]);
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+
+    const handlePopState = () => setPage(getInitialPage());
+    window.addEventListener("popstate", handlePopState);
+    return () => window.removeEventListener("popstate", handlePopState);
+  }, []);
 
   useEffect(() => {
     if (typeof window === "undefined") return;
@@ -230,7 +253,7 @@ export default function App() {
 
   const handleSignOut = async () => {
     setDashboardUnlocked(false);
-    setPage("home");
+    navigateToPage("home");
     showToast("Αποσυνδέθηκες", "Το dashboard έκλεισε.");
   };
 
@@ -536,7 +559,7 @@ export default function App() {
         page={page}
         menuOpen={menuOpen}
         setMenuOpen={setMenuOpen}
-        setPage={setPage}
+        setPage={navigateToPage}
         handleDashClick={handleDashClick}
       />
 
@@ -562,17 +585,17 @@ export default function App() {
           tiresLength={tires.length}
           search={search}
           setSearch={setSearch}
-          setActiveSearch={setActiveSearch}
-          setPage={setPage}
-          isLoading={productsLoading}
-        />
+            setActiveSearch={setActiveSearch}
+            setPage={navigateToPage}
+            isLoading={productsLoading}
+          />
       )}
 
       {page === "products" && (
         <ProductsPage
-          searchLabel={searchLabel}
-          setPage={setPage}
-          chips={chips}
+            searchLabel={searchLabel}
+            setPage={navigateToPage}
+            chips={chips}
           filteredProducts={filteredProducts}
           sortBy={sortBy}
           setSortBy={setSortBy}

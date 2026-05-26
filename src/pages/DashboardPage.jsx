@@ -13,6 +13,8 @@ import {
   WIDTHS,
 } from "../constants/appData";
 import { optimizeImageFile } from "../utils/imageUpload";
+import SEO from "../components/SEO";
+import { seoPages } from "../constants/seoData";
 
 export default function DashboardPage({
   dashTab,
@@ -78,6 +80,7 @@ export default function DashboardPage({
 
   return (
     <div className="dash-wrap">
+      <SEO {...seoPages.dashboard} />
       <div className="dash-sidenav">
         <div className="dash-sidenav-title">
           <div className="logo" style={{ fontSize: 16, letterSpacing: 2, cursor: "default" }}>
@@ -181,7 +184,7 @@ export default function DashboardPage({
             <div className="two-col">
               <div className="panel">
                 <div className="panel-head">
-                  <h3>📦 Ανά Μάρκα</h3>
+                  <h2>📦 Ανά Μάρκα</h2>
                 </div>
                 <div className="panel-body">
                   <div className="bbar">
@@ -199,7 +202,7 @@ export default function DashboardPage({
               </div>
               <div className="panel">
                 <div className="panel-head">
-                  <h3>⚡ Δραστηριότητα</h3>
+                  <h2>⚡ Δραστηριότητα</h2>
                 </div>
                 <div className="panel-body">
                   <div className="act-list">
@@ -263,7 +266,7 @@ export default function DashboardPage({
             {(outOfStk > 0 || lowStk > 0) && (
               <div className="panel">
                 <div className="panel-head">
-                  <h3>🚨 Χρειάζονται Προσοχή</h3>
+                  <h2>🚨 Χρειάζονται Προσοχή</h2>
                   <button className="panel-head-action" onClick={() => setDashTab("inventory")}>
                     Επεξεργασία →
                   </button>
@@ -436,8 +439,10 @@ export default function DashboardPage({
                     <div className="product-image-preview">
                       <img
                         src={form.imagePreviewUrl || form.imageUrl}
-                        alt={`${form.brand || "Ελαστικό"} ${form.name || ""}`.trim()}
+                        alt={`Εικόνα ελαστικού ${`${form.brand || "Ελαστικό"} ${form.name || ""}`.trim()}`}
                         loading="lazy"
+                        width="320"
+                        height="190"
                       />
                     </div>
                     <button
@@ -726,7 +731,7 @@ export default function DashboardPage({
             {filteredBrands.length === 0 ? (
               <div className="empty-state">
                 <div className="es-ico">🔍</div>
-                <h3>Δεν βρέθηκαν αποτελέσματα</h3>
+                <h2>Δεν βρέθηκαν αποτελέσματα</h2>
                 <p>Δοκίμασε διαφορετικά κριτήρια.</p>
               </div>
             ) : (
@@ -738,7 +743,7 @@ export default function DashboardPage({
 
                   return (
                     <div key={brand} className="brand-block">
-                      <div className="brand-block-header" onClick={() => toggleBrand(brand)}>
+                      <button type="button" className="brand-block-header" onClick={() => toggleBrand(brand)}>
                         <div className="brand-logo-circle">{BRAND_ICONS[brand] || "🛞"}</div>
                         <div className="brand-block-info">
                           <div className="brand-block-name">{brand}</div>
@@ -749,14 +754,21 @@ export default function DashboardPage({
                           {brandOut > 0 && <span className="brand-out-badge">⚠ {brandOut} εκτός</span>}
                         </div>
                         <span className={`brand-block-arrow ${isOpen ? "open" : ""}`}>▼</span>
-                      </div>
+                      </button>
                       {isOpen && (
                         <div className="brand-tire-list">
                           {brandTires.map((t) => (
                             <div key={t.id} className="tire-row">
                               <div className="tire-row-icon">
                                 {t.imageUrl ? (
-                                  <img src={t.imageUrl} alt={`${t.brand} ${t.name}`} className="tire-row-thumb" loading="lazy" />
+                                  <img
+                                    src={t.imageUrl}
+                                    alt={`Ελαστικό ${t.brand} ${t.name} σε απόθεμα`}
+                                    className="tire-row-thumb"
+                                    loading="lazy"
+                                    width="46"
+                                    height="46"
+                                  />
                                 ) : (
                                   "🛞"
                                 )}

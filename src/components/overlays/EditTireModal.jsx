@@ -73,7 +73,13 @@ export default function EditTireModal({ tire, setEditTire, onClose, onSave, onDe
             )}
             {(tire.imagePreviewUrl || tire.imageUrl) && (
               <div className="product-image-preview" style={{ gridColumn: "span 2", maxWidth: "100%", marginBottom: 0 }}>
-                <img src={tire.imagePreviewUrl || tire.imageUrl} alt={`${tire.brand} ${tire.name}`} loading="lazy" />
+                <img
+                  src={tire.imagePreviewUrl || tire.imageUrl}
+                  alt={`Εικόνα ελαστικού ${tire.brand} ${tire.name}`}
+                  loading="lazy"
+                  width="320"
+                  height="190"
+                />
               </div>
             )}
             <div className="mf" style={{ gridColumn: "span 2" }}>

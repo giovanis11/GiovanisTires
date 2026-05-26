@@ -1,3 +1,6 @@
+import SEO from "../components/SEO";
+import { seoPages } from "../constants/seoData";
+
 export default function ProductsPage({
   searchLabel,
   setPage,
@@ -16,13 +19,14 @@ export default function ProductsPage({
 }) {
   return (
     <div className="products-page">
+      <SEO {...seoPages.products} />
       <div className="products-topbar">
         <button className="back-btn" onClick={() => setPage("home")}>
           ← Πίσω
         </button>
-        <div className="topbar-title">
+        <h1 className="topbar-title">
           ΕΛΑΣΤΙΚΑ {searchLabel && <span>{searchLabel}</span>}
-        </div>
+        </h1>
         <div className="topbar-right">
           <button className="mob-filter-btn" onClick={() => setSidebarOpen(true)}>
             ⚙ Φίλτρα {chips.length > 0 && `(${chips.length})`}
@@ -40,10 +44,10 @@ export default function ProductsPage({
         <div className="active-filters">
           <span className="active-label">Φίλτρα:</span>
           {chips.map((c, i) => (
-            <div key={i} className="af-chip" onClick={c.clear}>
+            <button key={i} type="button" className="af-chip" onClick={c.clear}>
               {c.label}
               <span className="af-x">×</span>
-            </div>
+            </button>
           ))}
           <button className="clear-all-btn" onClick={clearAll}>
             Καθαρισμός όλων
@@ -51,7 +55,12 @@ export default function ProductsPage({
         </div>
       )}
       <div className="products-layout">
-        <div className={`mob-filter-overlay ${sidebarOpen ? "open" : ""}`} onClick={() => setSidebarOpen(false)} />
+        <button
+          type="button"
+          className={`mob-filter-overlay ${sidebarOpen ? "open" : ""}`}
+          onClick={() => setSidebarOpen(false)}
+          aria-label="Κλείσιμο φίλτρων"
+        />
         <div className={`sidebar ${sidebarOpen ? "mob-open" : ""}`}>
           {sidebarOpen && (
             <div
@@ -89,19 +98,19 @@ export default function ProductsPage({
           {isLoading ? (
             <div className="no-results">
               <div className="emoji">⏳</div>
-              <h3>Φορτώνεται ο κατάλογος</h3>
+              <h2>Φορτώνεται ο κατάλογος</h2>
               <p>Γίνεται ανάκτηση προϊόντων από το backend.</p>
             </div>
           ) : dataError ? (
             <div className="no-results">
               <div className="emoji">⚠️</div>
-              <h3>Δεν ήταν δυνατή η φόρτωση</h3>
+              <h2>Δεν ήταν δυνατή η φόρτωση</h2>
               <p>{dataError}</p>
             </div>
           ) : filteredProducts.length === 0 ? (
             <div className="no-results">
               <div className="emoji">🔍</div>
-              <h3>Δεν βρέθηκαν ελαστικά</h3>
+              <h2>Δεν βρέθηκαν ελαστικά</h2>
               <p>Δοκιμάστε να αλλάξετε τα φίλτρα.</p>
               <button className="buy-btn" style={{ marginTop: 20, padding: "9px 22px" }} onClick={clearAll}>
                 Καθαρισμός φίλτρων
@@ -113,7 +122,14 @@ export default function ProductsPage({
                 <div key={t.id} className={`product-card ${viewMode === "list" ? "lc" : ""}`}>
                   <div className="product-img">
                     {t.imageUrl ? (
-                      <img src={t.imageUrl} alt={`${t.brand} ${t.name}`} className="product-thumb" loading="lazy" />
+                      <img
+                        src={t.imageUrl}
+                        alt={`Ελαστικό αυτοκινήτου ${t.brand} ${t.name} για αλλαγή ελαστικών Αθήνα`}
+                        className="product-thumb"
+                        loading="lazy"
+                        width="320"
+                        height="210"
+                      />
                     ) : (
                       "🛞"
                     )}

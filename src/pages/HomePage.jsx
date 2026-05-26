@@ -1,8 +1,47 @@
+import { Helmet } from "react-helmet-async";
+import SEO from "../components/SEO";
 import { ASPECTS, RIMS, WIDTHS } from "../constants/appData";
+import {
+  BUSINESS_ADDRESS,
+  BUSINESS_DISPLAY_PHONE,
+  BUSINESS_EMAIL,
+  BUSINESS_GEO,
+  BUSINESS_LEGAL_NAME,
+  BUSINESS_PHONE,
+  pageUrls,
+  seoPages,
+} from "../constants/seoData";
 
 export default function HomePage({ tiresLength, search, setSearch, setActiveSearch, setPage, isLoading }) {
+  const localBusinessSchema = {
+    "@context": "https://schema.org",
+    "@type": "AutoRepair",
+    name: BUSINESS_LEGAL_NAME,
+    url: pageUrls.home,
+    telephone: BUSINESS_PHONE,
+    email: BUSINESS_EMAIL,
+    address: {
+      "@type": "PostalAddress",
+      ...BUSINESS_ADDRESS,
+    },
+    openingHours: ["Mo-Fr 08:00-18:00", "Sa 08:00-14:00"],
+    geo: {
+      "@type": "GeoCoordinates",
+      latitude: BUSINESS_GEO.latitude,
+      longitude: BUSINESS_GEO.longitude,
+    },
+    priceRange: "€€",
+    areaServed: "Athens",
+    sameAs: [],
+  };
+
   return (
     <>
+      <SEO {...seoPages.home} />
+      <Helmet>
+        <script type="application/ld+json">{JSON.stringify(localBusinessSchema)}</script>
+      </Helmet>
+
       <section className="hero">
         <div className="hero-bg" />
         <div className="tire-ring" />
@@ -88,7 +127,7 @@ export default function HomePage({ tiresLength, search, setSearch, setActiveSear
       </section>
 
       <section className="brands-section">
-        <h3>Συνεργαζόμαστε με</h3>
+        <h2>Συνεργαζόμαστε με</h2>
         <div className="brands-row">
           {["MICHELIN", "CONTINENTAL", "BRIDGESTONE", "PIRELLI", "GOODYEAR", "NOKIAN", "HANKOOK"].map(
             (b) => (
@@ -282,7 +321,7 @@ export default function HomePage({ tiresLength, search, setSearch, setActiveSear
               <div key={i} className="contact-item">
                 <div className="contact-ico">{c.icon}</div>
                 <div className="contact-detail">
-                  <h4>{c.title}</h4>
+                  <h3>{c.title}</h3>
                   <p style={{ whiteSpace: "pre-line" }}>{c.text}</p>
                 </div>
               </div>
@@ -337,20 +376,20 @@ export default function HomePage({ tiresLength, search, setSearch, setActiveSear
             </p>
           </div>
           <div className="footer-col">
-            <h4>Πλοήγηση</h4>
-            <a onClick={() => setPage("home")}>Αρχική</a>
-            <a onClick={() => setPage("products")}>Προϊόντα</a>
-            <a onClick={() => document.getElementById("services-section")?.scrollIntoView({ behavior: "smooth" })}>
+            <p className="footer-heading">Πλοήγηση</p>
+            <button type="button" onClick={() => setPage("home")}>Αρχική</button>
+            <button type="button" onClick={() => setPage("products")}>Προϊόντα</button>
+            <button type="button" onClick={() => document.getElementById("services-section")?.scrollIntoView({ behavior: "smooth" })}>
               Υπηρεσίες
-            </a>
-            <a onClick={() => document.getElementById("contact-section")?.scrollIntoView({ behavior: "smooth" })}>
+            </button>
+            <button type="button" onClick={() => document.getElementById("contact-section")?.scrollIntoView({ behavior: "smooth" })}>
               Επικοινωνία
-            </a>
+            </button>
           </div>
         </div>
         <div className="footer-bottom">
           <span className="footer-copy">© 2025 Ελαστικά Γιοβάνης. Όλα τα δικαιώματα διατηρούνται.</span>
-          <span className="footer-made">Αθήνα, Ελλάδα 🇬🇷</span>
+          <span className="footer-made">Αθήνα, Ελλάδα · {BUSINESS_DISPLAY_PHONE}</span>
         </div>
       </footer>
     </>

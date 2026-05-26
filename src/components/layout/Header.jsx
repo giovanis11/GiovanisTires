@@ -7,7 +7,8 @@ export default function Header({ page, menuOpen, setMenuOpen, setPage, handleDas
       </div>
 
       <nav className="nav">
-        <div
+        <button
+          type="button"
           className="logo"
           onClick={() => {
             setPage("home");
@@ -16,15 +17,16 @@ export default function Header({ page, menuOpen, setMenuOpen, setPage, handleDas
         >
           ΕΛΑΣΤΙΚΑ <span>ΓΙΟΒΑΝΗΣ</span>
           <small>Επαγγελματικά Ελαστικά</small>
-        </div>
+        </button>
         <div className="nav-links">
-          <a onClick={() => setPage("home")} className={page === "home" ? "act" : ""}>
+          <button type="button" onClick={() => setPage("home")} className={page === "home" ? "act" : ""}>
             Αρχική
-          </a>
-          <a onClick={() => setPage("products")} className={page === "products" ? "act" : ""}>
+          </button>
+          <button type="button" onClick={() => setPage("products")} className={page === "products" ? "act" : ""}>
             Προϊόντα
-          </a>
-          <a
+          </button>
+          <button
+            type="button"
             onClick={() => {
               setPage("home");
               setTimeout(
@@ -34,8 +36,9 @@ export default function Header({ page, menuOpen, setMenuOpen, setPage, handleDas
             }}
           >
             Υπηρεσίες
-          </a>
-          <a
+          </button>
+          <button
+            type="button"
             onClick={() => {
               setPage("home");
               setTimeout(
@@ -45,12 +48,12 @@ export default function Header({ page, menuOpen, setMenuOpen, setPage, handleDas
             }}
           >
             Επικοινωνία
-          </a>
-          <button className={`nav-admin-btn ${page === "dashboard" ? "act" : ""}`} onClick={handleDashClick}>
+          </button>
+          <button type="button" className={`nav-admin-btn ${page === "dashboard" ? "act" : ""}`} onClick={handleDashClick}>
             🔧 Διαχείριση
           </button>
         </div>
-        <button className={`hamburger ${menuOpen ? "open" : ""}`} onClick={() => setMenuOpen((o) => !o)}>
+        <button type="button" className={`hamburger ${menuOpen ? "open" : ""}`} onClick={() => setMenuOpen((o) => !o)}>
           <span />
           <span />
           <span />
@@ -58,23 +61,26 @@ export default function Header({ page, menuOpen, setMenuOpen, setPage, handleDas
       </nav>
 
       <div className={`mobile-menu ${menuOpen ? "open" : ""}`}>
-        <a
+        <button
+          type="button"
           onClick={() => {
             setPage("home");
             setMenuOpen(false);
           }}
         >
           Αρχική
-        </a>
-        <a
+        </button>
+        <button
+          type="button"
           onClick={() => {
             setPage("products");
             setMenuOpen(false);
           }}
         >
           Προϊόντα
-        </a>
-        <a
+        </button>
+        <button
+          type="button"
           onClick={() => {
             setPage("home");
             setMenuOpen(false);
@@ -85,8 +91,9 @@ export default function Header({ page, menuOpen, setMenuOpen, setPage, handleDas
           }}
         >
           Υπηρεσίες
-        </a>
-        <a
+        </button>
+        <button
+          type="button"
           onClick={() => {
             setPage("home");
             setMenuOpen(false);
@@ -97,8 +104,8 @@ export default function Header({ page, menuOpen, setMenuOpen, setPage, handleDas
           }}
         >
           Επικοινωνία
-        </a>
-        <button className="mob-admin" onClick={handleDashClick}>
+        </button>
+        <button type="button" className="mob-admin" onClick={handleDashClick}>
           🔧 Διαχείριση
         </button>
       </div>
