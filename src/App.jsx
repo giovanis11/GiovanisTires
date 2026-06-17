@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
+import { Analytics } from "@vercel/analytics/react";
 import { appStyle } from "./styles/appStyle";
 import {
   addCustomBrandToStorage,
@@ -521,6 +522,7 @@ export default function App() {
 
   return (
     <>
+      <Analytics />
       <style>{appStyle}</style>
 
       <PasswordGate
